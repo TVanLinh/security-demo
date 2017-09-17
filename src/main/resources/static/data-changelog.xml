@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    <changeSet id="0" author="Tran Van Linh">
+        <modifySql dbms="mysql">
+            <append value="ENGINE=INNODB CHARSET=UTF8 COLLATE utf8_unicode_ci"/>
+        </modifySql>
+    </changeSet>
+    
+    <changeSet id="1" author="Tran Van Linh">
+        <createTable tableName="user" >
+            <column name="ID" type="int" autoIncrement="true" >
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="USER_NAME" type="char(50)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="PASS_WORD" type="varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"/>
+            <column name="ENABLED" type="int"/>
+        </createTable>
+    </changeSet>
+
+
+
+    <changeSet id="2" author="Tran Van Linh">
+        <createTable tableName="role" >
+            <column name="ID" type="int" autoIncrement="true" >
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="NAME" type="char(50)"/>
+            <column name="USER_ID" type="int"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Tran Van Linh" id="addForeignKeyConstraint-user_role">
+        <addForeignKeyConstraint baseColumnNames="USER_ID"
+                                 baseTableName="role"
+                                 constraintName="fk_user_role"
+                                 referencedColumnNames="ID"
+                                 referencedTableName="user"/>
+    </changeSet>
+
+    <changeSet id="insert" author="tvlinh">
+        <insert tableName="user">
+            <column name="USER_NAME">tvlinh</column>
+            <column name="PASS_WORD">12345</column>
+            <column name="ENABLED">1</column>
+        </insert>
+
+        <insert tableName="role">
+            <column name="NAME">ROLE_USER</column>
+            <column name="USER_ID">1</column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
